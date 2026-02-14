@@ -1,7 +1,7 @@
 let numMissoes = 2;
 let modoAdmin = false;
 const SENHA_MESTRA = "clave123";
-const SEU_WHATSAPP = "5551998895851"; // Coloque seu número com DDD e sem espaços
+const SEU_WHATSAPP = "5551998895851"; // Coloque seu número aqui
 
 let dadosDiario = {
     hino: "Clique para definir",
@@ -40,6 +40,8 @@ function acessoProfessora() {
 
 function ajustarMissoes(valor) {
     numMissoes = Math.max(1, Math.min(4, numMissoes + valor));
+    // Quando ajusta, limpa os checks para não bugar
+    progressoAluna.checks = [];
     renderizarMissoes();
 }
 
@@ -86,7 +88,6 @@ function atualizarProgresso(comSom) {
     const concluidas = progressoAluna.checks.filter(c => c).length;
     const medalhasAtivas = progressoAluna.medalhas.filter(m => m).length;
     
-    // 60% missões / 40% medalhas
     let total = Math.round((concluidas / numMissoes * 60) + (medalhasAtivas / 5 * 40));
     if (isNaN(total)) total = 0;
 
@@ -99,38 +100,61 @@ function atualizarProgresso(comSom) {
     }
 }
 
+// --- AQUI ESTÁ O CONSERTO DO LINK MÁGICO ---
 function compartilharWhatsApp() {
     const total = document.getElementById('percentual').innerText;
-    const dadosBase64 = btoa(JSON.stringify(progressoAluna));
-    const linkProgresso = window.location.origin + window.location.pathname + "?p=" + dadosBase64;
     
-    const texto = `Oi Kaká! Completei minhas missões do Diário de Bordo. Meu progresso atual é de ${total}%! 🏅\n\nAqui o link do meu progresso: ${linkProgresso}`;
+    // Agora enviamos os DADOS DIARIO (texto) e o PROGRESSO no mesmo link
+    const pacoteCompleto = {
+        d: dadosDiario,
+        p: progressoAluna
+    };
+    
+    const dadosBase64 = btoa(JSON.stringify(pacoteCompleto));
+    const linkProgresso = window.location.origin + window.location.pathname + "?data=" + dadosBase64;
+    
+    const texto = `Oi Kaká! Aqui está meu Diário de Bordo. Progresso: ${total}%! 🏅\n\nLink: ${linkProgresso}`;
     window.open(`https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(texto)}`);
 }
 
 function salvarConfiguracao() {
     dadosDiario.hino = document.getElementById('nome-hino').innerText;
     dadosDiario.missoes = Array.from(document.querySelectorAll('.texto-missao')).map(s => s.innerText);
+    
+    // Salva no seu computador
     localStorage.setItem('config_semanal_clave', JSON.stringify(dadosDiario));
-    alert("Missões da semana salvas!");
-    location.reload();
+    
+    alert("Missões salvas! Agora clique em 'Enviar para Professora' para gerar o link da aluna.");
+    
+    modoAdmin = false;
+    document.getElementById('controles-admin').classList.add('hidden');
+    document.getElementById('btn-salvar').classList.add('hidden');
+    document.getElementById('nome-hino').contentEditable = false;
+    document.getElementById('btn-admin').innerText = "🔒 Modo Professora";
+    renderizarMissoes();
 }
 
 function carregarTudo() {
-    const config = localStorage.getItem('config_semanal_clave');
-    if(config) {
-        dadosDiario = JSON.parse(config);
-        numMissoes = dadosDiario.missoes.length;
-    }
-
+    // 1. Tenta carregar TUDO da URL (Link Mágico)
     const urlParams = new URLSearchParams(window.location.search);
-    const paramP = urlParams.get('p');
+    const paramData = urlParams.get('data');
     
-    if(paramP) {
-        progressoAluna = JSON.parse(atob(paramP));
+    if(paramData) {
+        try {
+            const pacote = JSON.parse(atob(paramData));
+            dadosDiario = pacote.d;
+            progressoAluna = pacote.p;
+            numMissoes = dadosDiario.missoes.length;
+        } catch(e) { console.error("Erro no link"); }
     } else {
-        const salvo = localStorage.getItem('progresso_aluna');
-        if(salvo) progressoAluna = JSON.parse(salvo);
+        // 2. Se não tem link, carrega o que estiver salvo no PC
+        const configSalva = localStorage.getItem('config_semanal_clave');
+        if(configSalva) {
+            dadosDiario = JSON.parse(configSalva);
+            numMissoes = dadosDiario.missoes.length;
+        }
+        const progressoSalvo = localStorage.getItem('progresso_aluna');
+        if(progressoSalvo) progressoAluna = JSON.parse(progressoSalvo);
     }
 
     document.getElementById('nome-hino').innerText = dadosDiario.hino;
@@ -141,6 +165,4 @@ function dispararConfete() {
     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#2D9CDB', '#FEC601', '#9B51E0'] });
 }
 
-
 window.onload = carregarTudo;
-
