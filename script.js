@@ -104,7 +104,7 @@ function compartilharWhatsApp() {
     const dadosBase64 = btoa(JSON.stringify(progressoAluna));
     const linkProgresso = window.location.origin + window.location.pathname + "?p=" + dadosBase64;
     
-    const texto = `Oi Karine! Completei minhas missões do Diário de Bordo. Meu progresso atual é de ${total}%! 🏅\n\nAqui o link do meu progresso: ${linkProgresso}`;
+    const texto = `Oi Kaká! Completei minhas missões do Diário de Bordo. Meu progresso atual é de ${total}%! 🏅\n\nAqui o link do meu progresso: ${linkProgresso}`;
     window.open(`https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(texto)}`);
 }
 
@@ -143,3 +143,4 @@ function dispararConfete() {
 
 
 window.onload = carregarTudo;
+
