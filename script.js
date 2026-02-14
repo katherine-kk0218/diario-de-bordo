@@ -1,7 +1,7 @@
 let numMissoes = 2;
 let modoAdmin = false;
 const SENHA_MESTRA = "clave123";
-const SEU_WHATSAPP = "5551999999999"; // Coloque seu número com DDD e sem espaços
+const SEU_WHATSAPP = "5551998895851"; // Coloque seu número com DDD e sem espaços
 
 let dadosDiario = {
     hino: "Clique para definir",
@@ -140,5 +140,6 @@ function carregarTudo() {
 function dispararConfete() {
     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#2D9CDB', '#FEC601', '#9B51E0'] });
 }
+
 
 window.onload = carregarTudo;
