@@ -1,0 +1,78 @@
+:root {
+    --prime-blue: #2D9CDB;
+    --prime-gold: #FEC601;
+    --text-dark: #1E293B;
+}
+
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+
+#main-canvas {
+    background: url('fundo_colorido.png') no-repeat center center fixed;
+    background-size: cover;
+    width: 100vw; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+}
+
+#diario-card {
+    background: rgba(255, 255, 255, 0.98);
+    width: 90%; max-width: 550px; min-height: 550px;
+    border-radius: 25px; border-top: 10px solid var(--prime-blue);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    position: relative; display: flex; flex-direction: column;
+    padding: 20px 30px 30px 30px; box-sizing: border-box;
+}
+
+.top-admin-container { display: flex; justify-content: flex-end; width: 100%; margin-bottom: 15px; }
+.btn-lock { background: #f1f5f9; border: none; color: #94a3b8; font-size: 0.75rem; cursor: pointer; padding: 6px 12px; border-radius: 10px; }
+
+.diario-header h1 { color: var(--prime-blue); margin: 0; font-size: 2.2rem; text-align: center; }
+.hino-mes-box { text-align: center; margin-top: 5px; color: var(--text-dark); font-size: 1.1rem; }
+.hino-mes-box strong { border-bottom: 2px dashed var(--prime-gold); color: var(--prime-blue); cursor: pointer; }
+
+.maestria-container { margin: 20px 0; background: #f8fafc; padding: 15px; border-radius: 20px; border: 1px solid #e2e8f0; }
+.barra-fundo { background: #e2e8f0; height: 14px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
+#barra-progresso { background: var(--prime-blue); width: 0%; height: 100%; transition: 0.6s ease; }
+
+.titulo-secao { font-size: 1.1rem; color: var(--prime-blue); margin-bottom: 12px; border-bottom: 2px solid #f1f5f9; padding-bottom: 5px; }
+.tarefa-item { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.check-missao { width: 22px; height: 22px; cursor: pointer; accent-color: var(--prime-blue); }
+
+.medalhas-grid { display: flex; justify-content: center; gap: 12px; padding: 15px; background: #fff9e6; border-radius: 15px; border: 1px solid var(--prime-gold); }
+.medalha { font-size: 2.5rem; filter: grayscale(100%); cursor: pointer; opacity: 0.2; transition: 0.4s; }
+.medalha.ativa { filter: grayscale(0%); opacity: 1; transform: scale(1.1); }
+
+.btn-main { border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 15px; background: var(--prime-blue); color: white; }
+.btn-qty { background: var(--prime-blue); color: white; border: none; width: 25px; height: 25px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+.logo-tela-canto { position: absolute; top: 20px; left: 20px; width: 100px; }
+.game-footer { margin-top: auto; padding-top: 20px; text-align: center; font-size: 0.8rem; color: #94A3B8; }
+.game-footer a { color: var(--prime-blue); text-decoration: none; font-weight: bold; }
+.hidden { display: none !important; }
+[contenteditable="true"] { background: #fffde7; outline: 2px solid var(--prime-gold); border-radius: 4px; padding: 0 5px; }
+/* ... (Mantenha o CSS anterior e adicione/ajuste estas partes) ... */
+
+.acoes-aluna {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-main.green { background: #27ae60; color: white; }
+.btn-main.outline { 
+    background: transparent; 
+    border: 2px solid var(--prime-blue); 
+    color: var(--prime-blue); 
+}
+
+.btn-main { 
+    flex: 1;
+    border: none; 
+    padding: 12px; 
+    border-radius: 12px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-size: 0.85rem;
+    transition: 0.3s;
+}
+
+.btn-main:hover { opacity: 0.8; transform: translateY(-2px); }

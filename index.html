@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diário de Bordo - Clave Colorida</title>
+    <link rel="icon" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body onclick="iniciarAudioAutomatico()">
+    <img src="logo-clave-colorida.png" class="logo-tela-canto">
+
+    <div id="main-canvas">
+        <div id="diario-card">
+            <header class="diario-header">
+                <div class="top-admin-container">
+                    <button id="btn-admin" class="btn-lock" onclick="acessoProfessora()">🔒 Modo Professora</button>
+                </div>
+                
+                <h1 id="titulo-diario">DIÁRIO DE BORDO</h1>
+                <div class="hino-mes-box">
+                    <span>🎵 Hino do Mês:</span>
+                    <strong id="nome-hino">Clique para definir</strong>
+                </div>
+                
+                <div class="maestria-container">
+                    <p>MEUS PONTOS DE MAESTRIA: <span id="percentual">0%</span></p>
+                    <div class="barra-fundo"><div id="barra-progresso"></div></div>
+                </div>
+            </header>
+
+            <main class="diario-conteudo">
+                <section class="secao-missoes">
+                    <div class="header-secao">
+                        <h2 class="titulo-secao">🚀 MISSÕES DA SEMANA</h2>
+                        <div id="controles-admin" class="hidden">
+                            <button class="btn-qty" onclick="ajustarMissoes(-1)">-</button>
+                            <button class="btn-qty" onclick="ajustarMissoes(1)">+</button>
+                        </div>
+                    </div>
+                    <div id="lista-tarefas"></div>
+                </section>
+
+                <section class="secao-regra">
+                    <h2 class="titulo-secao">🛡️ REGRA DAS 5 VEZES</h2>
+                    <div class="medalhas-grid" id="medalhas-box">
+                        <span class="medalha" onclick="toggleMedalha(0)">🏅</span>
+                        <span class="medalha" onclick="toggleMedalha(1)">🏅</span>
+                        <span class="medalha" onclick="toggleMedalha(2)">🏅</span>
+                        <span class="medalha" onclick="toggleMedalha(3)">🏅</span>
+                        <span class="medalha" onclick="toggleMedalha(4)">🏅</span>
+                    </div>
+                </section>
+                
+                <div class="acoes-aluna">
+                    <button class="btn-main green" onclick="compartilharWhatsApp()">📱 Enviar para Professora</button>
+                </div>
+
+                <button id="btn-salvar" class="btn-main blue hidden" onclick="salvarConfiguracao()">💾 Salvar Missões</button>
+            </main>
+
+            <footer class="game-footer">
+                Desenvolvido por Clave de C - <a href="http://www.clavedec.com.br" target="_blank">www.clavedec.com.br</a>
+            </footer>
+        </div>
+    </div>
+
+    <audio id="musica-fundo" loop><source src="fundo-musical.mp3" type="audio/mpeg"></audio>
+    <audio id="som-click" src="click.mp3"></audio>
+    <audio id="som-sucesso" src="confetti-parabens.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
