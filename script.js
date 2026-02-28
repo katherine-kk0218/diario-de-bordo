@@ -105,7 +105,7 @@ function compartilharWhatsApp() {
     const linkBase = window.location.origin + window.location.pathname;
     const linkFinal = linkBase + "?data=" + dadosBase64;
     
-    const texto = `Oi Karine! Aqui meu Diário de Bordo (${total}%). Link: ${linkFinal}`;
+    const texto = `Oi Kaká! Aqui meu Diário de Bordo (${total}%). Link: ${linkFinal}`;
     window.open(`https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(texto)}`);
 }
 
@@ -156,4 +156,5 @@ function dispararConfete() {
 }
 
 window.onload = carregarTudo;
+
 
