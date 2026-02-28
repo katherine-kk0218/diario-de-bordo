@@ -1,7 +1,7 @@
 let numMissoes = 2;
 let modoAdmin = false;
 const SENHA_MESTRA = "clave123";
-const SEU_WHATSAPP = "5551999999999"; 
+const SEU_WHATSAPP = "5551998895851"; 
 
 let dadosDiario = {
     hino: "Clique para definir",
@@ -156,3 +156,4 @@ function dispararConfete() {
 }
 
 window.onload = carregarTudo;
+
