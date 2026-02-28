@@ -1,7 +1,7 @@
 let numMissoes = 2;
 let modoAdmin = false;
 const SENHA_MESTRA = "clave123";
-const SEU_WHATSAPP = "5551998895851"; // Coloque seu número aqui
+const SEU_WHATSAPP = "5551999999999"; 
 
 let dadosDiario = {
     hino: "Clique para definir",
@@ -40,7 +40,6 @@ function acessoProfessora() {
 
 function ajustarMissoes(valor) {
     numMissoes = Math.max(1, Math.min(4, numMissoes + valor));
-    // Quando ajusta, limpa os checks para não bugar
     progressoAluna.checks = [];
     renderizarMissoes();
 }
@@ -87,33 +86,26 @@ function atualizarMedalhasVisuais() {
 function atualizarProgresso(comSom) {
     const concluidas = progressoAluna.checks.filter(c => c).length;
     const medalhasAtivas = progressoAluna.medalhas.filter(m => m).length;
-    
     let total = Math.round((concluidas / numMissoes * 60) + (medalhasAtivas / 5 * 40));
     if (isNaN(total)) total = 0;
-
     document.getElementById('barra-progresso').style.width = total + '%';
     document.getElementById('percentual').innerText = total + '%';
-    
     if(total >= 100 && comSom) {
         dispararConfete();
         somSucesso.play();
     }
 }
 
-// --- AQUI ESTÁ O CONSERTO DO LINK MÁGICO ---
 function compartilharWhatsApp() {
     const total = document.getElementById('percentual').innerText;
+    const pacoteCompleto = { d: dadosDiario, p: progressoAluna };
+    const dadosBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(pacoteCompleto))));
     
-    // Agora enviamos os DADOS DIARIO (texto) e o PROGRESSO no mesmo link
-    const pacoteCompleto = {
-        d: dadosDiario,
-        p: progressoAluna
-    };
+    // IMPORTANTE: Limpa o link de dados antigos para gerar um novo limpo
+    const linkBase = window.location.origin + window.location.pathname;
+    const linkFinal = linkBase + "?data=" + dadosBase64;
     
-    const dadosBase64 = btoa(JSON.stringify(pacoteCompleto));
-    const linkProgresso = window.location.origin + window.location.pathname + "?data=" + dadosBase64;
-    
-    const texto = `Oi Kaká! Aqui está meu Diário de Bordo. Progresso: ${total}%! 🏅\n\nLink: ${linkProgresso}`;
+    const texto = `Oi Karine! Aqui meu Diário de Bordo (${total}%). Link: ${linkFinal}`;
     window.open(`https://wa.me/${SEU_WHATSAPP}?text=${encodeURIComponent(texto)}`);
 }
 
@@ -121,10 +113,11 @@ function salvarConfiguracao() {
     dadosDiario.hino = document.getElementById('nome-hino').innerText;
     dadosDiario.missoes = Array.from(document.querySelectorAll('.texto-missao')).map(s => s.innerText);
     
-    // Salva no seu computador
-    localStorage.setItem('config_semanal_clave', JSON.stringify(dadosDiario));
+    // Limpa a URL antiga para não confundir o navegador ao salvar
+    window.history.pushState({}, document.title, window.location.pathname);
     
-    alert("Missões salvas! Agora clique em 'Enviar para Professora' para gerar o link da aluna.");
+    localStorage.setItem('config_semanal_clave', JSON.stringify(dadosDiario));
+    alert("Salvo com sucesso! Agora clique em ENVIAR para gerar o NOVO link.");
     
     modoAdmin = false;
     document.getElementById('controles-admin').classList.add('hidden');
@@ -135,19 +128,17 @@ function salvarConfiguracao() {
 }
 
 function carregarTudo() {
-    // 1. Tenta carregar TUDO da URL (Link Mágico)
     const urlParams = new URLSearchParams(window.location.search);
     const paramData = urlParams.get('data');
     
     if(paramData) {
         try {
-            const pacote = JSON.parse(atob(paramData));
+            const pacote = JSON.parse(decodeURIComponent(escape(atob(paramData))));
             dadosDiario = pacote.d;
             progressoAluna = pacote.p;
             numMissoes = dadosDiario.missoes.length;
         } catch(e) { console.error("Erro no link"); }
     } else {
-        // 2. Se não tem link, carrega o que estiver salvo no PC
         const configSalva = localStorage.getItem('config_semanal_clave');
         if(configSalva) {
             dadosDiario = JSON.parse(configSalva);
@@ -156,7 +147,6 @@ function carregarTudo() {
         const progressoSalvo = localStorage.getItem('progresso_aluna');
         if(progressoSalvo) progressoAluna = JSON.parse(progressoSalvo);
     }
-
     document.getElementById('nome-hino').innerText = dadosDiario.hino;
     renderizarMissoes();
 }
